@@ -30,10 +30,12 @@ pipeline {
                 script {
                     sh """
                    
-                    ./nightvision swagger extract ./ -t "${env.NIGHTVISION_TARGET}" --lang spring || true
-                    if [ ! -e openapi-spec.yml ]; then
-                        cp backup-openapi-spec.yml openapi-spec.yml
-                    fi
+                    # ./nightvision swagger extract ./ -t "${env.NIGHTVISION_TARGET}" --lang spring || true
+                    # if [ ! -e openapi-spec.yml ]; then
+                    #     cp backup-openapi-spec.yml openapi-spec.yml
+                    # fi
+                    docker run -v $(pwd):/mnt --env "NIGHTVISION_TOKEN=${env.NIGHTVISION_TOKEN}" alexnightvision/nightvision-cli \
+                        nightvision swagger extract ./ -t  "${env.NIGHTVISION_TARGET}" --lang spring
                     """
                 }
             }
